@@ -17,7 +17,7 @@ If an image is missing, the page displays a pastel placeholder instead.
 
 ## Audio
 
-- `background-music.mp4`: looping background music
+- `background-music-2.mp4`: looping background music
 - `cake-cutting-song.mp4`: cake-cutting celebration music
 
 Audio playback starts after a user interaction when browser autoplay rules
