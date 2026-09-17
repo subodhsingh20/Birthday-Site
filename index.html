@@ -70,19 +70,22 @@
           <li><a href="#surprise">Surprise</a></li>
           <li><a href="#quiz">Quiz</a></li>
         </ul>
+
+        <div class="music-control">
+          <span class="music-hint" aria-hidden="true">Click here to play/pause music</span>
+          <button
+            class="music-toggle"
+            type="button"
+            aria-label="Play or pause background music"
+            aria-pressed="false"
+          >
+            <span aria-hidden="true">♪</span>
+          </button>
+        </div>
       </nav>
     </header>
 
-    <button
-      class="music-toggle"
-      type="button"
-      aria-label="Play or pause background music"
-      aria-pressed="false"
-    >
-      <span aria-hidden="true">♪</span>
-    </button>
-
-    <audio id="bgMusic" src="assets/audio/background-music-2.mp4" autoplay loop muted preload="auto">
+    <audio id="bgMusic" src="assets/audio/background-music-2.mp4" autoplay loop preload="auto">
       Background music is unavailable. Add background-music-2.mp4 to assets/audio.
     </audio>
     <audio id="cakeMusic" src="assets/audio/cake-cutting-song.mp4" preload="auto">
@@ -105,6 +108,7 @@
           </p>
           <div class="hero-actions" aria-label="Birthday actions">
             <a class="button primary magic-button" href="#memories">Scroll down for magic &#x2728;</a>
+            <span class="action-hint" aria-hidden="true">click here</span>
           </div>
         </div>
 

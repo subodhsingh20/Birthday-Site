@@ -29,6 +29,7 @@ const canvas = document.querySelector("#confettiCanvas");
 const ctx = canvas.getContext("2d");
 
 let musicWanted = true;
+let autoplayFallbackListenersAttached = false;
 let currentSlide = 0;
 let confettiPieces = [];
 let confettiFrame;
@@ -103,16 +104,8 @@ function setupMusic() {
   bgMusic.volume = 0.22;
   cakeMusic.volume = 0.68;
   startBackgroundMusic();
-
-  ["pointerdown", "keydown", "touchstart"].forEach((eventName) => {
-    window.addEventListener(eventName, () => {
-      if (cakeSectionActive && !cakeMusicStarted) {
-        startCakeMusic();
-      } else if (musicWanted && bgMusic.paused) {
-        startBackgroundMusic();
-      }
-    }, { once: true, passive: true });
-  });
+  bgMusic.addEventListener("play", updateMusicButton);
+  bgMusic.addEventListener("pause", updateMusicButton);
 
   musicToggle.addEventListener("click", () => {
     musicWanted = bgMusic.paused;
@@ -120,6 +113,7 @@ function setupMusic() {
       if (!cakeMusicStarted) startBackgroundMusic();
     } else {
       bgMusic.pause();
+      removeAutoplayFallbackListeners();
     }
     updateMusicButton();
   });
@@ -127,19 +121,44 @@ function setupMusic() {
   updateMusicButton();
 }
 
-function startBackgroundMusic() {
+function startBackgroundMusic(allowAutoplayFallback = true) {
   if (!musicWanted || cakeMusicStarted) return;
   if (!bgMusic.paused) {
-    bgMusic.muted = false;
     updateMusicButton();
     return;
   }
-  bgMusic.muted = true;
   bgMusic.volume = 0.22;
-  bgMusic.play().then(() => {
-    bgMusic.muted = false;
+  try {
+    const playAttempt = bgMusic.play();
+    playAttempt.then(updateMusicButton).catch(() => {
+      updateMusicButton();
+      if (allowAutoplayFallback) attachAutoplayFallbackListeners();
+    });
+  } catch {
     updateMusicButton();
-  }).catch(updateMusicButton);
+    if (allowAutoplayFallback) attachAutoplayFallbackListeners();
+  }
+}
+
+function attachAutoplayFallbackListeners() {
+  if (autoplayFallbackListenersAttached || !musicWanted) return;
+  autoplayFallbackListenersAttached = true;
+  ["click", "touchstart", "keydown", "scroll"].forEach((eventName) => {
+    document.addEventListener(eventName, handleAutoplayFallback, { passive: true });
+  });
+}
+
+function removeAutoplayFallbackListeners() {
+  if (!autoplayFallbackListenersAttached) return;
+  ["click", "touchstart", "keydown", "scroll"].forEach((eventName) => {
+    document.removeEventListener(eventName, handleAutoplayFallback);
+  });
+  autoplayFallbackListenersAttached = false;
+}
+
+function handleAutoplayFallback() {
+  removeAutoplayFallbackListeners();
+  if (musicWanted && bgMusic.paused && !cakeMusicStarted) startBackgroundMusic(false);
 }
 
 function startCakeMusic() {
@@ -149,13 +168,18 @@ function startCakeMusic() {
   updateMusicButton();
   cakeMusic.currentTime = 0;
   cakeMusic.loop = true;
-  cakeMusic.play().then(() => {
-    cakeMusicStarted = true;
-    cakeMusicPending = false;
-  }).catch(() => {
+  try {
+    cakeMusic.play().then(() => {
+      cakeMusicStarted = true;
+      cakeMusicPending = false;
+    }).catch(() => {
+      cakeMusicPending = false;
+      if (musicWanted) startBackgroundMusic();
+    });
+  } catch {
     cakeMusicPending = false;
     if (musicWanted) startBackgroundMusic();
-  });
+  }
 }
 
 function updateMusicButton() {

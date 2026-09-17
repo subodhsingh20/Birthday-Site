@@ -102,7 +102,6 @@ a {
   margin: 0 auto;
   display: flex;
   align-items: center;
-  justify-content: space-between;
   gap: 1rem;
 }
 
@@ -197,10 +196,6 @@ a {
 }
 
 .music-toggle {
-  position: fixed;
-  top: calc(var(--header-height) + 0.85rem);
-  right: 1rem;
-  z-index: 90;
   width: 48px;
   height: 48px;
   color: var(--white);
@@ -209,6 +204,35 @@ a {
   border-radius: 50%;
   box-shadow: 0 14px 32px rgba(138, 99, 210, 0.3);
   transition: transform 0.2s ease, filter 0.2s ease, opacity 0.45s ease;
+}
+
+.music-control {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin-left: 1rem;
+}
+
+.music-hint {
+  width: 13rem;
+  color: #7d4771;
+  font-family: "Pacifico", cursive;
+  font-size: 0.76rem;
+  line-height: 1.35;
+  text-align: right;
+  transform: rotate(-3deg);
+  animation: hintFloat 2.4s ease-in-out infinite;
+}
+
+.music-hint::after {
+  content: "→";
+  display: inline-block;
+  margin-left: 0.25rem;
+  color: var(--purple);
+  font-family: "Open Sans", system-ui, sans-serif;
+  font-size: 1.15rem;
+  font-weight: 800;
+  vertical-align: -0.12rem;
 }
 
 .music-toggle:hover {
@@ -307,9 +331,29 @@ h3 {
 
 .hero-actions {
   display: flex;
+  align-items: center;
   flex-wrap: wrap;
   gap: 0.8rem;
   margin-top: 1.65rem;
+}
+
+.action-hint {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  color: #7d4771;
+  font-family: "Pacifico", cursive;
+  font-size: 1rem;
+  transform: rotate(4deg);
+  animation: hintFloat 2.4s ease-in-out infinite;
+}
+
+.action-hint::before {
+  content: "←";
+  color: var(--purple);
+  font-family: "Open Sans", system-ui, sans-serif;
+  font-size: 1.35rem;
+  font-weight: 800;
 }
 
 .magic-button {
@@ -1650,12 +1694,23 @@ body:not(.is-cake-dark) .cake-wish {
   }
 }
 
+@keyframes hintFloat {
+  0%,
+  100% {
+    transform: translateY(0) rotate(4deg);
+  }
+  50% {
+    transform: translateY(-4px) rotate(1deg);
+  }
+}
+
 @media (min-width: 720px) {
   .menu-toggle {
     display: none;
   }
 
   .nav-links {
+    margin-left: auto;
     position: static;
     display: flex;
     align-items: center;
@@ -1667,6 +1722,10 @@ body:not(.is-cake-dark) .cake-wish {
     transform: none;
     opacity: 1;
     pointer-events: auto;
+  }
+
+  .music-control {
+    flex-shrink: 0;
   }
 
   .nav-links a {
@@ -1732,6 +1791,35 @@ body:not(.is-cake-dark) .cake-wish {
 }
 
 @media (max-width: 640px) {
+  .navbar {
+    gap: 0.45rem;
+  }
+
+  .menu-toggle {
+    order: 3;
+    flex-shrink: 0;
+  }
+
+  .music-control {
+    order: 2;
+    margin-left: auto;
+    gap: 0.2rem;
+    flex-shrink: 0;
+  }
+
+  .music-hint {
+    width: min(8rem, 30vw);
+    font-size: 0.62rem;
+  }
+
+  .hero-actions {
+    align-items: flex-start;
+  }
+
+  .action-hint {
+    margin-top: 0.2rem;
+  }
+
   .quiz-grid {
     grid-template-columns: 1fr;
   }
@@ -1751,6 +1839,17 @@ body:not(.is-cake-dark) .cake-wish {
   .footer-signature {
     white-space: normal;
     text-align: center;
+  }
+}
+
+@media (max-width: 420px) {
+  .hero-actions {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .action-hint::before {
+    content: "↑";
   }
 }
 
