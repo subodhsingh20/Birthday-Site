@@ -1,16 +1,38 @@
-# Birthday site assets
+# Birthday Site Assets
 
-All paths are relative so they work from a GitHub Pages project site or a custom domain.
+All asset paths are relative, so the website works locally and when deployed to
+GitHub Pages or a custom domain.
 
-## images
+## Images
 
-- `memory-1.jpg` through `memory-4.jpg`: memory-card photos
-- `surprise-1.jpg` through `surprise-4.jpg`: image-carousel photos
-- `og-birthday.jpg`: social-sharing preview image
+### Memory cards
 
-## audio
+- `p1.jpeg` through `p5.jpeg`: memory-card photos
 
-- `background-music.mp4`: looping hero/background music
-- `cake-cutting-song.mp4`: one-time cake-cutting track
+### Life Partners carousel
 
-The page shows a placeholder when a card or carousel image is missing.
+- `u1.jpeg` through `u5.jpeg`: carousel photos in the Life Partners section
+
+If an image is missing, the page displays a pastel placeholder instead.
+
+## Audio
+
+- `background-music.mp4`: looping background music
+- `cake-cutting-song.mp4`: cake-cutting celebration music
+
+Audio playback starts after a user interaction when browser autoplay rules
+prevent automatic playback.
+
+## Other folders
+
+- `video/`: reserved for future birthday video assets
+
+## Website Features
+
+- Responsive birthday hero and memory gallery
+- Interactive cake cutting animation
+- Floating balloon popping celebration with confetti and fireworks
+- Love letter section with Hindi message
+- Life Partners image carousel
+- Four-question interactive quiz with reset button and reward animation
+- Animated footer signature
